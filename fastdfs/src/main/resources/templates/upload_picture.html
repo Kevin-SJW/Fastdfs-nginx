@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8" />
+    <title>fileUpload page</title>
+</head>
+<body>
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <div class="upload_box">
+        <!-- <b>上传图片</b> -->
+        <h1 th:inlines="text">文件上传</h1>
+        <input type="file"name="multipartFile"id="file" accept="image/*" onchange="imgChange(this);"/> <!--文件上传选择按钮-->
+        <div id="preview">
+            <img id="imghead"src="/style/images/blank.gif"width="260"height="180" /> <!--图片显示位置--></b>
+        </div>
+    </div>
+    <script type="text/javascript">
+        <!--选择图片显示-->
+        function imgChange(obj) {
+        //获取点击的文本框
+        var file =document.getElementById("file");
+        var imgUrl =window.URL.createObjectURL(file.files[0]);
+        var img =document.getElementById('imghead');
+        <!--修改img标签src属性值-->
+        img.setAttribute('src',imgUrl);
+        };
+        </script>
+    <p>
+        <input type="submit" value="上传" action="/upload" />
+    </p>
+</form>
+
+<!--<input th:value="${fileId}"/>-->
+
+<!--<form action="/delFile" method="DELETE">-->
+    <!--<input type="hidden" name="_method" value="DELETE">-->
+    <!--<input th:value="${fileId}" name="fileId" type="hidden"/>-->
+    <!--<input type="submit" value="删除"/>-->
+<!--</form>-->
+<input id="deleteId" type="text"/>
+<button id="deleteButton">删除</button>
+<script>
+
+        var deleteId = document.getElementById('deleteId')
+        var deleteButton = document.getElementById('deleteButton')
+        deleteButton.onclick = function (e){
+            var form = new FormData()
+            form.append('fileId',deleteId.value)
+                 fetch('http://localhost:8080/delFile', {
+                method: 'DELETE',
+                body: form
+            }).then(function(){
+                console.log('ok')
+            })
+        }
+    //form.append('fileId')
+</script>
+
+</body>
+</html>
